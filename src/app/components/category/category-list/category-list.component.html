@@ -3,8 +3,10 @@
 
   @for (cat of allCategories; track cat.id) {
   <p>Catégorie "{{ cat.name }}" - Description : {{ cat.description }}</p>
+  <button (click)="DeleteCategory(cat.id)">Supprimer</button>
   } @empty {
   <p>La liste des catégories est vide.</p>
   }
 </div>
+
 <button [routerLink]="'/category/new'">Ajouter</button>

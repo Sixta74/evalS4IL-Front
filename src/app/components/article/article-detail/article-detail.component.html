@@ -31,6 +31,17 @@
       [value]="article.price"
       (input)="UpdatePrice($event)"
     ></textarea>
+    <br />
+    @if(categories != null){
+    <select (change)="UpdateCategory($event)">
+      <option>Aucune</option>
+      @for (category of categories; track category.id) {
+      <option>
+        {{ category.name }}
+      </option>
+      }
+    </select>
+    }@else { Aucune catégorie disponible }
   </div>
   <br />
   <button [routerLink]="'/article'">Retour</button>

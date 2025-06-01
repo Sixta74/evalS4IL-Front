@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { ArticleService } from '../../../services/article.service';
+import { CategoryService } from '../../../services/category.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Article } from '../../../model/article';
+import { Category } from '../../../model/category';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-article-detail',
@@ -9,22 +12,41 @@ import { Article } from '../../../model/article';
   templateUrl: './article-detail.component.html',
   styleUrls: ['./article-detail.component.scss'],
 })
-export class ArticleDetailComponent {
+export class ArticleDetailComponent implements OnInit {
   @Input() article!: Article;
   @Output() parameterUpdated = new EventEmitter<Article>();
+
+  public articlesSubject = new BehaviorSubject<Article[]>([]);
 
   public edit: boolean = false;
   public originalArticle!: Article;
   public windowDisplayStatus: boolean = false;
+  categories: Category[] = [];
 
   constructor(
     private articleService: ArticleService,
+    private categoryService: CategoryService,
     private route: ActivatedRoute
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     const articleId: number = +this.route.snapshot.params['id'];
     this.articleService.getArticleById(articleId).subscribe((ret: Article) => {
       this.article = ret;
     });
+
+    this.loadCategories();
+  }
+
+  loadCategories(): void {
+    this.categoryService.getAllCategories().subscribe(
+      (categories) => {
+        this.categories = categories;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des catégories:', error);
+      }
+    );
   }
 
   UpdateName(event: Event) {
@@ -47,6 +69,19 @@ export class ArticleDetailComponent {
     this.parameterUpdated.emit(this.article);
   }
 
+  UpdateCategory(event: Event) {
+    const selectedCategoryId = Number(
+      (event.target as HTMLSelectElement).value
+    );
+    const selectedCategory = this.categories.find(
+      (category) => category.id === selectedCategoryId
+    );
+
+    if (selectedCategory) {
+      this.article.category = selectedCategory;
+    }
+  }
+
   EditArticle() {
     this.edit = !this.edit;
     if (this.edit) {
@@ -64,29 +99,21 @@ export class ArticleDetailComponent {
   }
 
   SaveChanges() {
-    this.articleService
-      .updateArticle(this.article)
-      .subscribe((updatedArticle) => {
+    this.articleService.updateArticle(this.article).subscribe(
+      (updatedArticle) => {
         console.log('MàJ réussie :', updatedArticle);
-
-        let updatedArticles = this.articleService.articlesSubject.value.map(
-          (a) => (a.id === updatedArticle.id ? updatedArticle : a)
-        );
-
-        this.articleService.updateArticles(updatedArticles);
-        // alert('Mise à jour réussie !');
-      });
+      },
+      (error) => {
+        console.error('Erreur lors de la mise à jour :', error);
+      }
+    );
   }
 
   DeleteArticle() {
     this.articleService.deleteArticle(this.article.id).subscribe({
-      next: () => {
-        // alert('Suppression effectuée');
-        // Pas besoin de rafraîchir manuellement, la liste est auto-mise à jour
-      },
+      next: () => {},
       error: (error) => {
         console.error('Erreur lors de la suppression :', error);
-        // alert('Erreur lors de la suppression :');
       },
     });
   }

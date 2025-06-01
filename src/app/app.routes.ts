@@ -10,18 +10,23 @@ import { CategoryListComponent } from './components/category/category-list/categ
 import { CategoryNewComponent } from './components/category/category-new/category-new.component';
 
 import { NotFoundComponent } from './technical/not-found/not-found.component';
+import { StockNewComponent } from './components/stock/stock-new/stock-new.component';
+import { CommandDetailComponent } from './components/command/command-detail/command-detail.component';
 
 export const routes: Routes = [
   //   { path: '', component: ConnectionFormComponent },
   { path: 'article', component: ArticleListComponent },
-  { path: 'article/:id', component: ArticleDetailComponent },
   { path: 'article/new', component: ArticleNewComponent },
+  { path: 'article/:id', component: ArticleDetailComponent },
 
   { path: 'command', component: CommandListComponent },
   { path: 'command/new', component: CommandNewComponent },
+  { path: 'command/:id', component: CommandDetailComponent },
 
   { path: 'category', component: CategoryListComponent },
   { path: 'category/new', component: CategoryNewComponent },
+
+  { path: 'stock', component: StockNewComponent },
 
   { path: '**', pathMatch: 'full', component: NotFoundComponent }, // NE RIEN METTRE DERIERE
 ];

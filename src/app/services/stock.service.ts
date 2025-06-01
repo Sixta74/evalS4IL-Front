@@ -8,7 +8,7 @@ import { Stock } from '../model/stock';
   providedIn: 'root',
 })
 export class StockService {
-  private stocksSubject = new BehaviorSubject<Stock[]>([]);
+  public stocksSubject = new BehaviorSubject<Stock[]>([]);
   stocks$ = this.stocksSubject.asObservable();
 
   readonly ROOT_STOCK_URL = APIService.ROOT_URL + '/stock';

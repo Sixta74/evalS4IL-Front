@@ -29,6 +29,14 @@ export class CategoryListComponent {
     });
   }
 
+  DeleteCategory(categoryId: number) {
+    this.categoryService.deleteCategory(categoryId).subscribe(() => {
+      this.allCategories = this.allCategories.filter(
+        (cat) => cat.id !== categoryId
+      );
+    });
+  }
+
   getName(): string {
     return 'CategoryListComponent';
   }

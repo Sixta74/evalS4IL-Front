@@ -39,7 +39,6 @@ export class ArticleService {
       `${this.ROOT_ARTICLE_URL}/${id}`
     );
   }
-
   addArticle(article: Article): Observable<Article> {
     let params = new HttpParams()
       .append(this.PARAM_ART_NAME, article.name)
@@ -50,7 +49,7 @@ export class ArticleService {
       .append(this.PARAM_ART_DESCRIPTION, article.description)
       .append(
         this.PARAM_ART_CATEGORY_ID,
-        article.category?.id.toString() || ''
+        article.category?.id ? article.category.id.toString() : ''
       );
 
     return this.apiService
@@ -72,11 +71,19 @@ export class ArticleService {
       .append(this.PARAM_ART_PICTURE, article.picture_URL)
       .append(this.PARAM_ART_PRICE, article.price.toString())
       .append(this.PARAM_ART_DESCRIPTION, article.description)
-      .append(this.PARAM_ART_CATEGORY_ID, article.category?.id.toString() || '')
       .append(
-        this.PARAM_ART_STOCK_IDS,
-        article.stocks.map((stock) => stock.id.toString()).join(',')
+        this.PARAM_ART_CATEGORY_ID,
+        article.category?.id.toString() || ''
       );
+
+    if (article.stocks && article.stocks.length > 0) {
+      let stockIds = '';
+      for (let stock of article.stocks) {
+        stockIds += stock.id.toString() + ',';
+      }
+      stockIds = stockIds.slice(0, -1);
+      params = params.append(this.PARAM_ART_STOCK_IDS, stockIds);
+    }
 
     return this.apiService.sendPutRequest<Article>(
       this.ROOT_ARTICLE_URL + '/update',

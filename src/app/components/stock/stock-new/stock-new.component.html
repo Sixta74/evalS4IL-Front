@@ -1,0 +1,51 @@
+<div class="overlay">
+  <div class="modal">
+    <h2>Ajout d'un nouveau stock</h2>
+
+    @if (stock) {
+    <p>
+      Date:
+      <br />
+      <input type="date" [value]="stock.date" (input)="UpdateDate($event)" />
+      <br />
+      Article:
+      <br />
+      <select (change)="UpdateArticle($event)">
+        @for (article of articles; track article.id) {
+        <option>
+          {{ article.name }}
+        </option>
+        }
+      </select>
+      <br />
+      Quantité:
+      <br />
+      <input
+        type="number"
+        [value]="stock.quantity"
+        (input)="UpdateQuantity($event)"
+      />
+      <br />
+      Type de transfert:
+      <br />
+      <select (change)="UpdateTransferType($event)">
+        <option value="IN">Entrée</option>
+        <option value="OUT">Sortie</option>
+      </select>
+      <br />
+      Commentaire:
+      <br />
+      <input
+        type="text"
+        [value]="stock.comment"
+        (input)="UpdateComment($event)"
+      />
+    </p>
+    } @else {
+    <p>Aucun stock disponible</p>
+    }
+
+    <button (click)="CreateStock()">Enregistrer</button>
+    <!-- <button (click)="CloseWindow()" [routerLink]="'/command'">Annuler</button> -->
+  </div>
+</div>

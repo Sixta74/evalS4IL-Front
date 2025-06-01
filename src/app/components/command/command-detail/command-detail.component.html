@@ -10,7 +10,19 @@
 
   <button (click)="EditCommand()">Modifier</button>
   <button (click)="DeleteCommand()">Supprimer</button>
-  } @else {
+
+  <h2>Stocks liés à la commande</h2>
+  @if (command.stocks && command.stocks.length > 0) { @for (stock of
+  command.stocks; track stock.id) {
+  <p>
+    Article : {{ stock.article.name }} <br />
+    Quantité : {{ stock.quantity }} <br />
+    Type de transfert : {{ stock.transferType }} <br />
+    Commentaire : {{ stock.comment }}
+  </p>
+  } } @else {
+  <p>Aucun stock lié à cette commande.</p>
+  } } @else {
   <p>
     Date :
     <input type="date" [value]="command.date" (input)="UpdateDate($event)" />

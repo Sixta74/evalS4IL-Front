@@ -4,7 +4,7 @@ import { CommandService } from '../../../services/command.service';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-command-detail',
+  selector: 'app-command-detail', 
     imports: [RouterLink],
   templateUrl: './command-detail.component.html',
   styleUrls: ['./command-detail.component.scss'],

@@ -12,13 +12,11 @@ export class Stock {
 
   constructor(
     date: Date,
-    article: Article,
     quantity: number,
     transferType: string,
     comment: string
   ) {
     this.date = date;
-    this.article = article;
     this.quantity = quantity;
     this.transferType = transferType;
     this.comment = comment;

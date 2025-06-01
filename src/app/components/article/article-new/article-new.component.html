@@ -37,6 +37,27 @@
         [value]="article.description"
         (input)="UpdateDescription($event)"
       />
+      <br />
+      Url Image:
+      <br />
+      <input
+        type="text"
+        [value]="article.picture_URL"
+        (input)="UpdatePictureUrl($event)"
+      />
+      <br />
+      Catégories:
+      <br />
+      @if(categories != null){
+      <select (change)="UpdateCategory($event)">
+        <option>Aucune</option>
+        @for (category of categories; track category.id) {
+        <option>
+          {{ category.name }}
+        </option>
+        }
+      </select>
+      }@else { Aucune catégorie disponible }
     </p>
     }@else {
     <p>Aucun article disponible</p>
