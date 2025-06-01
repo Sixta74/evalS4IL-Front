@@ -1,0 +1,50 @@
+<div class="overlay">
+  <div class="modal">
+    Voici les détails de l'article @if (article) {
+    <p>
+      Nom:
+      <br />
+      <input type="text" [value]="article.name" (input)="UpdateName($event)" />
+      <br />
+      EAN13:
+      <br />
+      <input
+        type="text"
+        [value]="article.EAN13"
+        (input)="UpdateEAN13($event)"
+      />
+      <br />
+      Marque:
+      <br />
+      <input
+        type="text"
+        [value]="article.brand"
+        (input)="UpdateBrand($event)"
+      />
+      <br />
+      Prix:
+      <br />
+      <input
+        type="text"
+        [value]="article.price"
+        (input)="UpdatePrice($event)"
+      />
+      <br />
+      Description:
+      <br />
+      <input
+        type="text"
+        [value]="article.description"
+        (input)="UpdateDescription($event)"
+      />
+    </p>
+    }@else {
+    <p>Aucun article disponible</p>
+    }
+
+    <button (click)="CreateArticle(); CloseWindow()" [routerLink]="'/article'">
+      Enregistrer
+    </button>
+    <button (click)="CloseWindow()" [routerLink]="'/article'">Annuler</button>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="CategoryList">
+  <h1 class="main-title">Liste des Catégories</h1>
+
+  @for (cat of allCategories; track cat.id) {
+  <p>Catégorie "{{ cat.name }}" - Description : {{ cat.description }}</p>
+  } @empty {
+  <p>La liste des catégories est vide.</p>
+  }
+</div>
+<button [routerLink]="'/category/new'">Ajouter</button>

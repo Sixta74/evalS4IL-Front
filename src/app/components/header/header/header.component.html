@@ -1,0 +1,55 @@
+<nav class="navbar">
+  <img
+    src="https://www.esiea.fr/wp-content/themes/esiea/img/logo-esiea.svg"
+    alt="Logo ESIEA"
+    class="logo"
+  />
+
+  <ul class="nav-links">
+    <li>
+      <a routerLink="/home" routerLinkActive="active">Accueil</a>
+    </li>
+    <li>
+      <a routerLink="/planning" routerLinkActive="active">Planning</a>
+    </li>
+    <li class="dropdown-container">
+      <a
+        class="dropdown-toggle-custom"
+        aria-haspopup="true"
+        aria-expanded="false"
+        >Projets</a
+      >
+      <ul class="submenu">
+        <li>
+          <a routerLink="/project" routerLinkActive="active"
+            >Projet Informatique</a
+          >
+        </li>
+        <li>
+          <a routerLink="/students" routerLinkActive="active">Étudiants</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a routerLink="/sworns" routerLinkActive="active">Jury</a>
+    </li>
+    <li class="dropdown-container">
+      <a
+        class="dropdown-toggle-custom"
+        aria-haspopup="true"
+        aria-expanded="false"
+        >Notation</a
+      >
+      <ul class="submenu">
+        <li><a routerLink="" routerLinkActive="active">Barème</a></li>
+        <li><a routerLink="" routerLinkActive="active">Résultat</a></li>
+      </ul>
+    </li>
+    <li>
+      <a routerLink="" routerLinkActive="active">Paramètre</a>
+    </li>
+    <li>
+      <a routerLink="" class="logout">Déconnexion</a>
+    </li>
+  </ul>
+</nav>

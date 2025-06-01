@@ -1,0 +1,28 @@
+<div class="overlay">
+  <div class="modal">
+    <h2>Création d'une nouvelle commande</h2>
+
+    @if (command) {
+    <p>
+      Date :
+      <br />
+      <input type="date" [value]="command.date" (input)="UpdateDate($event)" />
+      <br />
+      Commentaire :
+      <br />
+      <input
+        type="text"
+        [value]="command.comment"
+        (input)="UpdateComment($event)"
+      />
+    </p>
+    } @else {
+    <p>Aucune commande disponible</p>
+    }
+
+    <button (click)="CreateCommand(); CloseWindow()" [routerLink]="'/command'">
+      Enregistrer
+    </button>
+    <button (click)="CloseWindow()" [routerLink]="'/command'">Annuler</button>
+  </div>
+</div>

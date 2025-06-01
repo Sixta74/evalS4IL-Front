@@ -1,0 +1,32 @@
+<div class="CommandDetail">
+  <h1 class="main-title">Détail de la Commande</h1>
+
+  @if (command) {
+  <p>ID : {{ command.id }}</p>
+
+  @if (!edit) {
+  <p>Date : {{ command.date }}</p>
+  <p>Commentaire : {{ command.comment }}</p>
+
+  <button (click)="EditCommand()">Modifier</button>
+  <button (click)="DeleteCommand()">Supprimer</button>
+  } @else {
+  <p>
+    Date :
+    <input type="date" [value]="command.date" (input)="UpdateDate($event)" />
+  </p>
+  <p>
+    Commentaire :
+    <input
+      type="text"
+      [value]="command.comment"
+      (input)="UpdateComment($event)"
+    />
+  </p>
+
+  <button (click)="EditCommand()">Sauvegarder</button>
+  <button (click)="RevertCommand()">Annuler</button>
+  } } @else {
+  <p>Aucune commande disponible.</p>
+  }
+</div>

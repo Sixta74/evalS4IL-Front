@@ -1,0 +1,31 @@
+<div class="overlay">
+  <div class="modal">
+    <h2>Création d'une nouvelle catégorie</h2>
+
+    @if (category) {
+    <p>
+      Nom:
+      <br />
+      <input type="text" [value]="category.name" (input)="UpdateName($event)" />
+      <br />
+      Description:
+      <br />
+      <input
+        type="text"
+        [value]="category.description"
+        (input)="UpdateDescription($event)"
+      />
+    </p>
+    } @else {
+    <p>Aucune catégorie disponible</p>
+    }
+
+    <button
+      (click)="CreateCategory(); CloseWindow()"
+      [routerLink]="'/category'"
+    >
+      Enregistrer
+    </button>
+    <button (click)="CloseWindow()" [routerLink]="'/category'">Annuler</button>
+  </div>
+</div>

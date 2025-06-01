@@ -1,0 +1,16 @@
+<div class="StockDetail">
+  <h1 class="main-title">Détail du Stock</h1>
+
+  @if (stock) {
+  <p>Date : {{ stock.date }}</p>
+  <p>Article : {{ stock.article.name }}</p>
+  <p>Quantité : {{ stock.quantity }}</p>
+  <p>Type de transfert : {{ stock.transferType }}</p>
+  <p>Commentaire : {{ stock.comment }}</p>
+
+  <button (click)="EditStock()">Modifier</button>
+  <button (click)="RevertStock()">Annuler</button>
+  } @else {
+  <p>Aucune entrée de stock disponible.</p>
+  }
+</div>

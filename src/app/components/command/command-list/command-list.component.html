@@ -1,0 +1,12 @@
+<div class="CommandList">
+  <h1 class="main-title">Liste des Bons de Commande</h1>
+
+  @for (command of allCommands; track command.id) {
+  <p>
+    Date : {{ command.date }} - Commentaire :
+    {{ command.stocks.length }}
+  </p>
+  <p>La liste des commandes est vide.</p>
+  }
+</div>
+<button [routerLink]="'/category/new'">Ajouter</button>

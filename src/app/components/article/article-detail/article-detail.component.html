@@ -1,0 +1,43 @@
+<div class="ArticleDetail">
+  <h1 class="main-title">Modifier:</h1>
+
+  @if (article) {
+  <div class="ArticleContainer">
+    <br />
+    <textarea
+      class="textblock"
+      type="text"
+      [value]="article.name"
+      (input)="UpdateName($event)"
+    ></textarea>
+    <br />
+    <textarea
+      class="textblock"
+      type="text"
+      [value]="article.EAN13"
+      (input)="UpdateEAN13($event)"
+    ></textarea>
+    <br />
+    <textarea
+      class="textblock"
+      type="text"
+      [value]="article.brand"
+      (input)="UpdateBrand($event)"
+    ></textarea>
+    <br />
+    <textarea
+      class="textblock"
+      type="text"
+      [value]="article.price"
+      (input)="UpdatePrice($event)"
+    ></textarea>
+  </div>
+  <br />
+  <button [routerLink]="'/article'">Retour</button>
+  <br />
+  <button (click)="SaveChanges()" [routerLink]="'/article'">Sauvegarder</button>
+  <button (click)="DeleteArticle()" [routerLink]="'/article'">Supprimer</button>
+  } @else {
+  <p>Aucun article disponible.</p>
+  }
+</div>
