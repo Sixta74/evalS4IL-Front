@@ -6,7 +6,7 @@
     Nom {{ article.name }} <br />
     Prix : {{ article.price }}€<br />
     <img src="{{ article.picture_URL }}" alt="image ici" /><br />
-    Quantité:
+    Quantité: {{ article.getTotalStockQuantity() }}
     <br />
     <button [routerLink]="'/article/' + article.id">Modifier</button>
   </p>

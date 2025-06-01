@@ -45,6 +45,12 @@ export class StockService {
     );
   }
 
+  getStocksByArticleId(articleId: number): Observable<Stock[]> {
+    return this.apiService.sendGetRequest<Stock[]>(
+      `${this.ROOT_STOCK_URL}/all/${articleId}`
+    );
+  }
+
   addStock(commandId: number, stock: Stock): Observable<Stock> {
     if (!stock.article || !stock.article.id) {
       console.error('Article invalide pour le stock !');

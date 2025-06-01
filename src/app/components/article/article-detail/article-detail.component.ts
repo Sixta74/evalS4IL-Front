@@ -5,6 +5,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Article } from '../../../model/article';
 import { Category } from '../../../model/category';
 import { BehaviorSubject } from 'rxjs';
+import { Stock } from '../../../model/stock';
+import { StockService } from '../../../services/stock.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -26,16 +28,36 @@ export class ArticleDetailComponent implements OnInit {
   constructor(
     private articleService: ArticleService,
     private categoryService: CategoryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private stockService: StockService
   ) {}
 
   ngOnInit(): void {
     const articleId: number = +this.route.snapshot.params['id'];
+
     this.articleService.getArticleById(articleId).subscribe((ret: Article) => {
       this.article = ret;
+
+      this.stockService
+        .getStocksByArticleId(articleId)
+        .subscribe((stocks: Stock[]) => {
+          this.article.stocks = stocks;
+        });
     });
 
     this.loadCategories();
+  }
+
+  getTotalStockQuantity(): number {
+    if (!this.article || !this.article.stocks) {
+      return 0;
+    }
+
+    return this.article.stocks.reduce((total, stock) => {
+      return stock.transferType === 'IN'
+        ? total + stock.quantity
+        : total - stock.quantity;
+    }, 0);
   }
 
   loadCategories(): void {

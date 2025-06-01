@@ -4,6 +4,8 @@ import { Article } from '../../../model/article';
 import { ArticleService } from '../../../services/article.service';
 import { ArticleDetailComponent } from '../article-detail/article-detail.component';
 import { RouterLink } from '@angular/router';
+import { StockService } from '../../../services/stock.service';
+import { Stock } from '../../../model/stock';
 
 @Component({
   selector: 'app-article-list',
@@ -14,7 +16,10 @@ import { RouterLink } from '@angular/router';
 export class ArticleListComponent {
   allArticles: Article[] = [];
 
-  constructor(private articleService: ArticleService) {
+  constructor(
+    private articleService: ArticleService,
+    private stockService: StockService
+  ) {
     let obs: Observable<Article[]> = articleService.getAllArticles();
     this.allArticles = [];
 
@@ -29,6 +34,12 @@ export class ArticleListComponent {
           tmpArticle.price,
           tmpArticle.description
         );
+        this.stockService
+          .getStocksByArticleId(tmpArticle.id)
+          .subscribe((stocks: Stock[]) => {
+            curArticle.stocks = stocks;
+          });
+
         this.allArticles.push(curArticle);
       });
     });
@@ -38,36 +49,3 @@ export class ArticleListComponent {
     return 'ArticleListComponent';
   }
 }
-
-//   ngOnInit(): void {
-//     this.articleService.articles$.subscribe((articles) => {
-//       this.allArticles = articles;
-//     });
-
-//     // Chargement initial avec les données actuelles
-//     this.articleService.getAllArticles().subscribe((data) => {
-//       this.articleService.articlesSubject.next(data);
-//     });
-//   }
-
-//   RemoveArticle(removedArticle: Article) {
-//     this.allArticles = this.allArticles.filter(
-//       (article) => article != removedArticle
-//     );
-//   }
-
-//   AddArticleToList(addedArticle: Article) {
-//     this.allArticles.push(addedArticle);
-//   }
-
-//   changeAddWindowStateArticle() {
-//     this.windowDisplayStatus = !this.windowDisplayStatus;
-//   }
-
-//   updateWindowStatus(newStatus: boolean) {
-//     this.windowDisplayStatus = newStatus;
-//   }
-
-//   getName(): string {
-//     return 'ArticleListComponent';
-//   }

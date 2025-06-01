@@ -90,4 +90,15 @@ export class Article {
   setStocks(stocks: Stock[]) {
     this.stocks = stocks;
   }
+
+  getTotalStockQuantity(): number {
+    if (!this.stocks || this.stocks.length === 0) {
+      return 0;
+    }
+    return this.stocks.reduce((total, stock) => {
+      return stock.transferType === 'IN'
+        ? total + stock.quantity
+        : total - stock.quantity;
+    }, 0);
+  }
 }

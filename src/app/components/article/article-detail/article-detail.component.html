@@ -32,6 +32,9 @@
       (input)="UpdatePrice($event)"
     ></textarea>
     <br />
+    <div>
+      <p>Stock disponible : {{ getTotalStockQuantity() }}</p>
+    </div>
 
     @if(categories != null){
     <select (change)="UpdateCategory($event)">
@@ -50,6 +53,7 @@
       <option value="{{ category.id }}">{{ category.name }}</option>
       } }
     </select>
+    <br />
     } @else {
     <p>Aucune catégorie disponible.</p>
     }

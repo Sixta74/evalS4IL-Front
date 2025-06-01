@@ -20,7 +20,7 @@ export class StockNewComponent implements OnInit {
   stock: Stock = new Stock(new Date(), 1, 'IN', 'Commentaire par défaut');
   articles: Article[] = [];
   commandId!: number;
-  choosenCommand!: Command; // ✅ Ajout de la commande sélectionnée
+  choosenCommand!: Command;
 
   constructor(
     private stockService: StockService,
@@ -31,8 +31,6 @@ export class StockNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.commandId = Number(this.route.snapshot.params['commandId']);
-
-    // 🔥 Récupère la commande existante avant de modifier les stocks
     this.commandService.getCommandById(this.commandId).subscribe((command) => {
       this.choosenCommand = command;
     });
@@ -91,6 +89,23 @@ export class StockNewComponent implements OnInit {
       .subscribe((article) => {
         this.stock.article = article;
 
+        const totalStockQuantity = article.getTotalStockQuantity();
+
+        if (
+          this.stock.transferType === 'OUT' &&
+          this.stock.quantity > totalStockQuantity
+        ) {
+          console.error(
+            `Tentative de transfert échoué, pas assez d'articles en stock.` +
+              { totalStockQuantity }
+          );
+          alert(
+            `Tentative de transfert échoué, pas assez d'articles en stock.` +
+              { totalStockQuantity }
+          );
+          return;
+        }
+
         this.stockService
           .addStock(this.commandId, this.stock)
           .subscribe((response: Stock) => {
@@ -100,25 +115,10 @@ export class StockNewComponent implements OnInit {
               .getCommandById(this.commandId)
               .subscribe((updatedCommand) => {
                 this.choosenCommand = updatedCommand;
-
-                // 🔥 Ajoute un log pour voir les stocks avant mise à jour
-                console.log(
-                  'Stocks avant mise à jour :',
-                  this.choosenCommand.stocks
-                );
-
-                this.choosenCommand.stocks.push(response);
-
-                // 🔥 Ajoute un log pour voir les stocks après mise à jour
-                console.log(
-                  'Stocks après ajout du nouveau stock :',
-                  this.choosenCommand.stocks
-                );
-
                 this.commandService
                   .updateCommand(this.choosenCommand)
                   .subscribe(() => {
-                    console.log('Commande mise à jour avec le nouveau stock !');
+                    console.log('Commande mise à jour.');
                   });
 
                 this.closeRequest.emit();

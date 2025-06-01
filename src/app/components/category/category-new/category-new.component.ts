@@ -55,11 +55,11 @@ export class CategoryNewComponent implements OnInit {
     this.categoryService.addCategory(this.category).subscribe(
       (response: Category) => {
         this.addedCategory.emit(response);
-        this.loadCategories(); // 🔥 Rechargement après ajout
+        this.loadCategories();
         this.closeRequest.emit();
       },
       (error) => {
-        console.error('Erreur lors de l’ajout de la catégorie :', error);
+        console.error("Erreur lors de l'ajout de la catégorie :", error);
       }
     );
   }

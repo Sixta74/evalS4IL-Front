@@ -34,7 +34,6 @@ export class CommandDetailComponent {
     this.commandService.getCommandById(commandId).subscribe(
       (command) => {
         this.command = command;
-        console.log('Commande mise à jour :', this.command);
         if (!this.command.stocks) {
           this.command.stocks = [];
         }
@@ -51,7 +50,6 @@ export class CommandDetailComponent {
     this.commandService.getCommandById(this.command.id).subscribe(
       (updatedCommand) => {
         this.command.stocks = updatedCommand.stocks;
-        console.log('Stocks mis à jour :', this.command.stocks);
       },
       (error) => {
         console.error('Erreur lors du rafraîchissement des stocks :', error);

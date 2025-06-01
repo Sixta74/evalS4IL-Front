@@ -3,7 +3,6 @@ import { Command } from '../../../model/command';
 import { CommandService } from '../../../services/command.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Stock } from '../../../model/stock';
-import { Article } from '../../../model/article';
 import { StockService } from '../../../services/stock.service';
 import { StockNewComponent } from '../../stock/stock-new/stock-new.component';
 

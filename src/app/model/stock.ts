@@ -1,5 +1,4 @@
 import { Article } from './article';
-import { Command } from './command';
 
 export class Stock {
   id!: number;
