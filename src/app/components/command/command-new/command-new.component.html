@@ -20,57 +20,5 @@
     <button (click)="CreateCommand(); CloseWindow()" [routerLink]="'/command'">
       Enregistrer
     </button>
-
-    <h3>Ajout de stocks</h3>
-    <div>
-      @for (stock of stocks; track stock.id) {
-      <p>
-        Article :
-        <br />
-        <input
-          type="text"
-          [value]="stock.article.name"
-          (input)="UpdateStockArticle($event, stock)"
-        />
-        <br />
-        Quantité :
-        <br />
-        <input
-          type="number"
-          [value]="stock.quantity"
-          (input)="UpdateStockQuantity($event, stock)"
-        />
-        <br />
-        Type de transfert :
-        <br />
-        <select (change)="UpdateStockTransferType($event, stock)">
-          <option value="IN">Entrée</option>
-          <option value="OUT">Sortie</option>
-        </select>
-        <br />
-        Commentaire :
-        <br />
-        <input
-          type="text"
-          [value]="stock.comment"
-          (input)="UpdateStockComment($event, stock)"
-        />
-      </p>
-
-      <button (click)="RemoveStock(stock)">Supprimer Stock</button>
-      }
-    </div>
-    <!-- @if(!windowDisplayStatus){
-    <button (click)="AddStockWindow()">Ajouter un stock</button>
-    } @if(windowDisplayStatus){
-    <app-stock-new></app-stock-new>
-    <button (click)="AddStockWindow()">Fermer</button>
-    } } @else {
-    <p>Aucune commande disponible</p>
-    } @if(!windowDisplayStatus){
-    <button (click)="CreateCommand(); CloseWindow()" [routerLink]="'/command'">
-      Enregistrer
-    </button> -->
-    <!-- } -->
   </div>
 </div>

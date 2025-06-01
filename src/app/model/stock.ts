@@ -6,7 +6,6 @@ export class Stock {
   date!: Date;
   article!: Article;
   quantity!: number;
-  command!: Command;
   transferType!: string;
   comment!: string;
 
@@ -52,14 +51,6 @@ export class Stock {
 
   setQuantity(quantity: number): void {
     this.quantity = quantity;
-  }
-
-  getCommand(): Command {
-    return this.command;
-  }
-
-  setCommand(command: Command): void {
-    this.command = command;
   }
 
   getTransferType(): string {

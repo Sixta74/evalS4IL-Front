@@ -7,6 +7,7 @@
     Prix : {{ article.price }}€<br />
     <img src="{{ article.picture_URL }}" alt="image ici" /><br />
     Quantité:
+    <br />
     <button [routerLink]="'/article/' + article.id">Modifier</button>
   </p>
   } @empty {

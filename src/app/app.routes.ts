@@ -26,7 +26,7 @@ export const routes: Routes = [
   { path: 'category', component: CategoryListComponent },
   { path: 'category/new', component: CategoryNewComponent },
 
-  { path: 'stock', component: StockNewComponent },
+  { path: 'stock/new/:commandId', component: StockNewComponent },
 
   { path: '**', pathMatch: 'full', component: NotFoundComponent }, // NE RIEN METTRE DERIERE
 ];

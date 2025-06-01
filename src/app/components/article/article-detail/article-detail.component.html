@@ -32,16 +32,27 @@
       (input)="UpdatePrice($event)"
     ></textarea>
     <br />
+
     @if(categories != null){
     <select (change)="UpdateCategory($event)">
+      @if(article.category != null){
+      <option value="{{ article.category.id }}">
+        {{ article.category.name }}
+      </option>
+      @for (category of categories; track category.id) { @if(article.category.id
+      != category.id){
+      <option value="{{ category.id }}">{{ category.name }}</option>
+      } }
+      <option>Aucune</option>
+      } @else {
       <option>Aucune</option>
       @for (category of categories; track category.id) {
-      <option>
-        {{ category.name }}
-      </option>
-      }
+      <option value="{{ category.id }}">{{ category.name }}</option>
+      } }
     </select>
-    }@else { Aucune catégorie disponible }
+    } @else {
+    <p>Aucune catégorie disponible.</p>
+    }
   </div>
   <br />
   <button [routerLink]="'/article'">Retour</button>

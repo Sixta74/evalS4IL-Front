@@ -1,5 +1,5 @@
 <div class="CommandDetail">
-  <h1 class="main-title">Détail de la Commande</h1>
+  <h1 class="main-title">Commande actuelle:</h1>
 
   @if (command) {
   <p>ID : {{ command.id }}</p>
@@ -20,8 +20,11 @@
     Type de transfert : {{ stock.transferType }} <br />
     Commentaire : {{ stock.comment }}
   </p>
-  } } @else {
+  }
+  <button [routerLink]="['/stock/new', command.id]">Ajouter</button>
+  } @else {
   <p>Aucun stock lié à cette commande.</p>
+  <button [routerLink]="['/stock/new', command.id]">Ajouter</button>
   } } @else {
   <p>
     Date :

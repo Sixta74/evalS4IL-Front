@@ -50,9 +50,13 @@ export class CommandService {
   }
 
   updateCommand(command: Command): Observable<Command> {
+    if (typeof command.date === 'string') {
+      command.date = new Date(command.date);
+    }
+
     let params = new HttpParams()
       .append(this.PARAM_COM_ID, command.id.toString())
-      .append(this.PARAM_COM_DATE, command.date.toISOString().split('T')[0]) // Format YYYY-MM-DD
+      .append(this.PARAM_COM_DATE, command.date.toISOString().split('T')[0])
       .append(this.PARAM_COM_COMMENT, command.comment);
 
     return this.apiService.sendPutRequest<Command>(

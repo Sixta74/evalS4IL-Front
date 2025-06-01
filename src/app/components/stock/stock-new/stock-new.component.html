@@ -5,14 +5,18 @@
     @if (stock) {
     <p>
       Date:
-      <br />
-      <input type="date" [value]="stock.date" (input)="UpdateDate($event)" />
+      <!-- Merci internet pour la conversion en format du calendrier -->
+      <input
+        type="date"
+        [value]="stock.date ? stock.date.toISOString().split('T')[0] : ''"
+        (input)="UpdateDate($event)"
+      />
       <br />
       Article:
       <br />
       <select (change)="UpdateArticle($event)">
         @for (article of articles; track article.id) {
-        <option>
+        <option [value]="article.id">
           {{ article.name }}
         </option>
         }
@@ -44,8 +48,9 @@
     } @else {
     <p>Aucun stock disponible</p>
     }
-
-    <button (click)="CreateStock()">Enregistrer</button>
-    <!-- <button (click)="CloseWindow()" [routerLink]="'/command'">Annuler</button> -->
+    <button (click)="CreateStock()" [routerLink]="'/command/' + commandId">
+      Enregistrer
+    </button>
+    <button [routerLink]="['/command']">Retour aux commandes</button>
   </div>
 </div>

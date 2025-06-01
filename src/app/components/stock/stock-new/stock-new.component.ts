@@ -4,6 +4,7 @@ import { StockService } from '../../../services/stock.service';
 import { ArticleService } from '../../../services/article.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Article } from '../../../model/article';
+import { CommandService } from '../../../services/command.service';
 
 @Component({
   selector: 'app-stock-new',
@@ -17,20 +18,24 @@ export class StockNewComponent implements OnInit {
 
   stock: Stock = new Stock(new Date(), 1, 'IN', 'Commentaire par défaut');
   articles: Article[] = [];
+  commandId!: number; // ✅ Ajout de l'ID de commande
 
   constructor(
     private stockService: StockService,
     private articleService: ArticleService,
+    private commandService: CommandService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.commandId = Number(this.route.snapshot.params['commandId']);
     this.fetchArticles();
   }
 
   fetchArticles(): void {
     this.articleService.getAllArticles().subscribe(
       (articles) => {
+        console.log('Articles récupérés :', articles);
         this.articles = articles;
       },
       (error) => {
@@ -42,47 +47,61 @@ export class StockNewComponent implements OnInit {
   UpdateDate(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.stock.date = new Date(inputElement.value);
+    console.log('Date mise à jour :', this.stock.date.toISOString());
   }
 
   UpdateQuantity(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.stock.quantity = Number(inputElement.value);
+    this.stock.quantity = Number((event.target as HTMLInputElement).value);
   }
 
   UpdateTransferType(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    this.stock.transferType = selectElement.value;
+    this.stock.transferType = (event.target as HTMLSelectElement).value;
   }
 
   UpdateComment(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.stock.comment = inputElement.value;
+    this.stock.comment = (event.target as HTMLInputElement).value;
   }
 
   UpdateArticle(event: Event) {
-    const selectedArticleId = Number((event.target as HTMLSelectElement).value);
+    const selectElement = event.target as HTMLSelectElement;
+
+    const selectedArticleId = Number(selectElement.value);
+
     const selectedArticle = this.articles.find(
       (article) => article.id === selectedArticleId
     );
-
     if (selectedArticle) {
       this.stock.article = selectedArticle;
+    } else {
     }
   }
 
   CreateStock() {
-    this.stockService.addStock(this.stock).subscribe(
-      (response: Stock) => {
-        this.addedStock.emit(response);
-        this.stockService.getAllStocks().subscribe((updatedStocks) => {
-          this.stockService.stocksSubject.next(updatedStocks);
-        });
-        this.closeRequest.emit();
-      },
-      (error) => {
-        console.error('Erreur :', error);
-      }
-    );
+    if (!this.stock.article || !this.stock.article.id) {
+      console.error('Article non sélectionné !');
+      return;
+    }
+
+    this.articleService
+      .getArticleById(this.stock.article.id)
+      .subscribe((article) => {
+        this.stock.article = article;
+
+        this.stockService
+          .addStock(this.commandId, this.stock)
+          .subscribe((response: Stock) => {
+            this.addedStock.emit(response);
+
+            this.commandService
+              .getCommandById(this.commandId)
+              .subscribe((updatedCommand) => {
+                updatedCommand.stocks.push(response);
+                this.commandService.updateCommand(updatedCommand).subscribe();
+              });
+
+            this.closeRequest.emit();
+          });
+      });
   }
 
   CloseWindow() {
