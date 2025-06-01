@@ -59,6 +59,9 @@ export class CommandService {
       .append(this.PARAM_COM_DATE, command.date.toISOString().split('T')[0])
       .append(this.PARAM_COM_COMMENT, command.comment);
 
+    const stockIds = command.stocks.map((stock) => stock.id).join(',');
+    params = params.append('StockIds', stockIds);
+
     return this.apiService.sendPutRequest<Command>(
       this.ROOT_COMMAND_URL + '/update',
       params

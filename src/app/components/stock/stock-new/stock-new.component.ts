@@ -5,6 +5,7 @@ import { ArticleService } from '../../../services/article.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Article } from '../../../model/article';
 import { CommandService } from '../../../services/command.service';
+import { Command } from '../../../model/command';
 
 @Component({
   selector: 'app-stock-new',
@@ -18,7 +19,8 @@ export class StockNewComponent implements OnInit {
 
   stock: Stock = new Stock(new Date(), 1, 'IN', 'Commentaire par défaut');
   articles: Article[] = [];
-  commandId!: number; // ✅ Ajout de l'ID de commande
+  commandId!: number;
+  choosenCommand!: Command; // ✅ Ajout de la commande sélectionnée
 
   constructor(
     private stockService: StockService,
@@ -29,13 +31,18 @@ export class StockNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.commandId = Number(this.route.snapshot.params['commandId']);
+
+    // 🔥 Récupère la commande existante avant de modifier les stocks
+    this.commandService.getCommandById(this.commandId).subscribe((command) => {
+      this.choosenCommand = command;
+    });
+
     this.fetchArticles();
   }
 
   fetchArticles(): void {
     this.articleService.getAllArticles().subscribe(
       (articles) => {
-        console.log('Articles récupérés :', articles);
         this.articles = articles;
       },
       (error) => {
@@ -47,7 +54,6 @@ export class StockNewComponent implements OnInit {
   UpdateDate(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.stock.date = new Date(inputElement.value);
-    console.log('Date mise à jour :', this.stock.date.toISOString());
   }
 
   UpdateQuantity(event: Event) {
@@ -64,7 +70,6 @@ export class StockNewComponent implements OnInit {
 
   UpdateArticle(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
-
     const selectedArticleId = Number(selectElement.value);
 
     const selectedArticle = this.articles.find(
@@ -72,7 +77,6 @@ export class StockNewComponent implements OnInit {
     );
     if (selectedArticle) {
       this.stock.article = selectedArticle;
-    } else {
     }
   }
 
@@ -95,11 +99,30 @@ export class StockNewComponent implements OnInit {
             this.commandService
               .getCommandById(this.commandId)
               .subscribe((updatedCommand) => {
-                updatedCommand.stocks.push(response);
-                this.commandService.updateCommand(updatedCommand).subscribe();
-              });
+                this.choosenCommand = updatedCommand;
 
-            this.closeRequest.emit();
+                // 🔥 Ajoute un log pour voir les stocks avant mise à jour
+                console.log(
+                  'Stocks avant mise à jour :',
+                  this.choosenCommand.stocks
+                );
+
+                this.choosenCommand.stocks.push(response);
+
+                // 🔥 Ajoute un log pour voir les stocks après mise à jour
+                console.log(
+                  'Stocks après ajout du nouveau stock :',
+                  this.choosenCommand.stocks
+                );
+
+                this.commandService
+                  .updateCommand(this.choosenCommand)
+                  .subscribe(() => {
+                    console.log('Commande mise à jour avec le nouveau stock !');
+                  });
+
+                this.closeRequest.emit();
+              });
           });
       });
   }

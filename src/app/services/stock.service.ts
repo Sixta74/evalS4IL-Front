@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { APIService } from './api-service.service';
 import { HttpParams } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap, throwError, catchError } from 'rxjs';
+import {
+  Observable,
+  BehaviorSubject,
+  tap,
+  throwError,
+  catchError,
+  map,
+} from 'rxjs';
 import { Stock } from '../model/stock';
 
 @Injectable({
@@ -55,7 +62,7 @@ export class StockService {
     return this.apiService
       .sendPostRequest<Stock>(this.ROOT_STOCK_URL + '/add', params)
       .pipe(
-        tap((newStock) => {
+        tap((newStock: Stock) => {
           const currentStocks = this.stocksSubject.value;
           this.stocksSubject.next([...currentStocks, newStock]);
         }),
